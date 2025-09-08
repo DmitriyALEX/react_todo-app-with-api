@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cn from 'classnames';
 import { FilterOptions } from '../types/enums';
 
 type Props = {
+  filterTypeValue: FilterOptions;
   onSetfilterType: (value: FilterOptions) => void;
   handleDeleteCompleted: () => void;
   completedLength: number;
@@ -10,13 +11,12 @@ type Props = {
 };
 
 const Footer: React.FC<Props> = ({
+  filterTypeValue,
   onSetfilterType,
   handleDeleteCompleted,
   completedLength,
   notCompletedTodos,
 }) => {
-  const [selectedType, setSelectedType] = useState(FilterOptions.All);
-
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
@@ -27,12 +27,11 @@ const Footer: React.FC<Props> = ({
         <a
           href="#/"
           className={cn('filter__link', {
-            selected: selectedType === FilterOptions.All,
+            selected: filterTypeValue === FilterOptions.All,
           })}
           data-cy="FilterLinkAll"
           onClick={() => {
             onSetfilterType(FilterOptions.All);
-            setSelectedType(FilterOptions.All);
           }}
         >
           {FilterOptions.All}
@@ -41,12 +40,11 @@ const Footer: React.FC<Props> = ({
         <a
           href="#/active"
           className={cn('filter__link', {
-            selected: selectedType === FilterOptions.Active,
+            selected: filterTypeValue === FilterOptions.Active,
           })}
           data-cy="FilterLinkActive"
           onClick={() => {
             onSetfilterType(FilterOptions.Active);
-            setSelectedType(FilterOptions.Active);
           }}
         >
           {FilterOptions.Active}
@@ -55,12 +53,11 @@ const Footer: React.FC<Props> = ({
         <a
           href="#/completed"
           className={cn('filter__link', {
-            selected: selectedType === FilterOptions.Completed,
+            selected: filterTypeValue === FilterOptions.Completed,
           })}
           data-cy="FilterLinkCompleted"
           onClick={() => {
             onSetfilterType(FilterOptions.Completed);
-            setSelectedType(FilterOptions.Completed);
           }}
         >
           {FilterOptions.Completed}

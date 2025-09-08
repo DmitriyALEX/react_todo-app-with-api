@@ -45,25 +45,16 @@ export const App: React.FC = () => {
       });
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setErrorMessage(ErrorMesagges.defaultValue);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [errorMessage]);
-
   if (!USER_ID) {
     return <UserWarning />;
   }
 
-  //delete one todo
   const handleDelete = async (todoId: number) => {
     try {
       const response = await deleteTodos(todoId);
 
       if (response) {
-        setTodos(prev => prev.filter(x => x.id !== todoId));
+        setTodos(prev => prev.filter(todo => todo.id !== todoId));
       }
     } catch (e) {
       setErrorMessage(ErrorMesagges.UnableDelete);
@@ -76,7 +67,6 @@ export const App: React.FC = () => {
   const completedItems = todos.filter(x => x.completed === true);
   const completedLength = completedItems.length;
 
-  //delete completed Items
   const handleDeleteCompleted = () => {
     completedItems.forEach(item => {
       handleDelete(item.id);
@@ -124,7 +114,7 @@ export const App: React.FC = () => {
     }
   };
 
-  const notCompletedTodos = todos.filter(x => !x.completed).length;
+  const notCompletedTodos = todos.filter(todo => !todo.completed).length;
 
   const handleToggle = (id: number, completed: boolean) => {
     setTodos(prev =>
@@ -164,6 +154,7 @@ export const App: React.FC = () => {
               setTodos={setTodos}
             />
             <Footer
+              filterTypeValue={filterTypeValue}
               onSetfilterType={handleSetfilterType}
               handleDeleteCompleted={handleDeleteCompleted}
               completedLength={completedLength}
@@ -173,7 +164,10 @@ export const App: React.FC = () => {
         )}
       </div>
 
-      <ErrorNotifacations isError={errorMessage} />
+      <ErrorNotifacations
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
     </div>
   );
 };
