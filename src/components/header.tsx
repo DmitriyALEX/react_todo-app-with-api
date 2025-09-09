@@ -10,7 +10,6 @@ type Props = {
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   toggleActiveStatus: () => void;
   isAllTodosCompleted: boolean;
-  isSuccessDeleting: boolean;
   todos: Todo[];
 };
 
@@ -20,7 +19,6 @@ const Header: React.FC<Props> = ({
   setTodos,
   toggleActiveStatus,
   isAllTodosCompleted,
-  isSuccessDeleting,
   todos,
 }) => {
   const [inputQuery, setInputQuery] = useState<string>('');
@@ -32,10 +30,10 @@ const Header: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    if (!isDisabledInput || isSuccessDeleting) {
+    if (!isDisabledInput) {
       inputRef.current?.focus();
     }
-  }, [isDisabledInput, isSuccessDeleting]);
+  }, [isDisabledInput, todos.length]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,10 +52,8 @@ const Header: React.FC<Props> = ({
         completed: false,
       };
 
-      //create tempTodo
       setTempTodo(createTempTodo);
 
-      //send created todo to server
       const newTodo = await createTodos(inputQuery.trim());
 
       setTodos(prev => [...prev, newTodo]);

@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { UserWarning } from './UserWarning';
 import { updateTodo, USER_ID } from './api/todos';
 import { getTodos } from './api/todos';
-import ErrorNotifacations from './components/errorNotifacations';
-import Footer from './components/footer';
-import TodoList from './components/todoList';
-import Header from './components/header';
+import ErrorNotifacations from './components/ErrorNotifacations';
+import Footer from './components/Footer';
+import TodoList from './components/TodoList';
+import Header from './components/Header';
 import { Todo } from './types/Todo';
 import { filterData } from './helpers/filterData';
 import { ErrorMesagges, FilterOptions } from './types/enums';
@@ -26,8 +26,6 @@ export const App: React.FC = () => {
 
   const [deletingIds, setDeletingIds] = useState<number[] | []>([]);
   const [completedIds, setCompletedIds] = useState<number[] | []>([]);
-
-  const [isSuccessDeleting, setIsSuccessDeleting] = useState<boolean>(false);
 
   const [isLoadingIds, setIsLoadingIds] = useState<number[] | []>([]);
 
@@ -60,7 +58,6 @@ export const App: React.FC = () => {
       setErrorMessage(ErrorMesagges.UnableDelete);
     } finally {
       setDeletingIds([]);
-      setIsSuccessDeleting(true);
     }
   };
 
@@ -70,7 +67,6 @@ export const App: React.FC = () => {
   const handleDeleteCompleted = () => {
     completedItems.forEach(item => {
       handleDelete(item.id);
-      setIsSuccessDeleting(true);
     });
   };
 
@@ -133,7 +129,6 @@ export const App: React.FC = () => {
           setTodos={setTodos}
           toggleActiveStatus={toggleActiveStatus}
           isAllTodosCompleted={isAllTodosCompleted}
-          isSuccessDeleting={isSuccessDeleting}
           todos={todos}
         />
 
